@@ -1,5 +1,6 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { useSearchContext } from '../../contexts/searchContext';
+import { useOutsideClick } from '../../hooks/useOutsideClick';
 
 /* 
 In a real world scenario I'd review the design in order to cut off the extra click for searching
@@ -8,7 +9,6 @@ This component is implemented this way in order to do the autocomplete requireme
 */
 
 export const SearchInputs = () => {
-  
   const {
     searchType, setSearchType,
     searchTerm, setSearchTerm,
@@ -19,6 +19,8 @@ export const SearchInputs = () => {
     refetch,
     result,
   } = useSearchContext();
+
+  const autocompleteRef = useRef(null);
   
   const inputPlaceholder = useMemo(() => {
     switch(searchType) {
@@ -40,6 +42,10 @@ export const SearchInputs = () => {
     refetch();
     setShowResults(true);
   }
+
+  useOutsideClick(autocompleteRef, () => {
+    setShowAutocomplete(false);
+  })
 
   return (
     <div className='SearchContainer'>
@@ -80,6 +86,7 @@ export const SearchInputs = () => {
       {showAutocomplete && searchTerm ? (
         <div
           className='autocomplete-container'
+          ref={autocompleteRef}
         >
           {result?.count && !isFetching ? (
             <div className=''>

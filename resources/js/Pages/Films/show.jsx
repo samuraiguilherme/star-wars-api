@@ -30,7 +30,7 @@ export default function Show({
                   ))}
                 </div>
               </div>
-              <div>
+              <div className='back-search'>
                 <Link
                   as='button'
                   type='button'

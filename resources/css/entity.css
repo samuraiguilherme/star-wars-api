@@ -32,10 +32,6 @@ a, p {
   text-decoration: none;
 }
 
-p {
-  margin-bottom: 15px;
-}
-
 a:hover {
   text-decoration: underline;
 }
@@ -46,4 +42,14 @@ hr {
 
 div.opening-crawl {
   width: 55%;
+  max-height: 320px;
+  overflow-y: scroll;
+}
+
+div.opening-crawl > p {
+  margin-bottom: 15px;
+}
+
+div.back-search {
+  width: 210px;
 }

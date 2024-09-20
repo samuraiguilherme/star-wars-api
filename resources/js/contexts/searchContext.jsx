@@ -29,7 +29,7 @@ export const SearchContextProvider = ({ children }) => {
   })
 
   useEffect(() => {
-    if (debouncedSearchTerm?.length > 1) {
+    if (debouncedSearchTerm?.length > 0) {
       refetch();
     }
   }, [debouncedSearchTerm])
