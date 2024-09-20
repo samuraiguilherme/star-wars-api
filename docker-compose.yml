@@ -23,6 +23,7 @@ services:
             - sail
         depends_on:
             - meilisearch
+            - selenium
     meilisearch:
         image: 'getmeili/meilisearch:latest'
         ports:
@@ -42,6 +43,14 @@ services:
                 - 'http://127.0.0.1:7700/health'
             retries: 3
             timeout: 5s
+    selenium:
+        image: 'selenium/standalone-chrome'
+        extra_hosts:
+        - 'host.docker.internal:host-gateway'
+        volumes:
+            - '/dev/shm:/dev/shm'
+        networks:
+            - sail
 networks:
     sail:
         driver: bridge
