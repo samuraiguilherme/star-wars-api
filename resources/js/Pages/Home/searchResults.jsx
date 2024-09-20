@@ -4,17 +4,19 @@ import { ResultsTable } from './resultsTable';
 
 export const SearchResults = () => {
   const {
+    isFetching,
     result,
     showResults,
+    showAutocomplete,
   } = useSearchContext();
 
   return (
     <div className='results-container'>
       <div className='Results Text-Style'>
-        Results {result?.count && showResults ? `(${result?.count})` : ''}
+        Results {result?.count && showResults && !isFetching && !showAutocomplete ? `(${result?.count})` : ''}
       </div>
       <hr />
-      {showResults ? (
+      {showResults && !showAutocomplete && !isFetching ? (
         <>
           {result?.count ? (
             <ResultsTable />

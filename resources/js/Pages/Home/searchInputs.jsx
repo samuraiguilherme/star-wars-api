@@ -1,13 +1,20 @@
 import React, { useMemo } from 'react';
 import { useSearchContext } from '../../contexts/searchContext';
 
+/* 
+In a real world scenario I'd review the design in order to cut off the extra click for searching
+and instead returned the results for on input change.
+This component is implemented this way in order to do the autocomplete requirement within the same app. 
+*/
+
 export const SearchInputs = () => {
   
   const {
     searchType, setSearchType,
     searchTerm, setSearchTerm,
+    setSearchTermPicked,
     showAutocomplete, setShowAutocomplete,
-    setShowResults,
+    showResults, setShowResults,
     isFetching,
     refetch,
     result,
@@ -24,6 +31,7 @@ export const SearchInputs = () => {
   }, [searchType]);
 
   const handleSearchClick = (e) => {
+    setSearchTermPicked(true);
     setShowAutocomplete(false);
     setSearchTerm(e.name ?? e.title);
   }
@@ -31,7 +39,6 @@ export const SearchInputs = () => {
   const handleSubmit = () => {
     refetch();
     setShowResults(true);
-    setShowAutocomplete(false);
   }
 
   return (
@@ -70,13 +77,15 @@ export const SearchInputs = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
-      <div
-        className={`autocomplete-container ${showAutocomplete ? '' : 'hide'}`}
-      >
-        {showAutocomplete && result?.count ? (
+      {showAutocomplete && searchTerm ? (
+        <div
+          className='autocomplete-container'
+        >
+          {result?.count && !isFetching ? (
             <div className=''>
-              {result.results.map(res => (
+              {result.results.map((res, index) => (
                 <p
+                  key={`autocomplete:${index}`}
                   className='autocomplete-option'
                   onClick={() => handleSearchClick(res)}
                 >
@@ -85,13 +94,14 @@ export const SearchInputs = () => {
               ))}
             </div>
           ) : null}
-      </div>
+        </div>
+      ) : null}
       <div className='button-container'>
         <button
-          disabled={isFetching || !searchTerm}
+          disabled={!searchTerm}
           onClick={handleSubmit}
         >
-          {isFetching ? 'SEARCHING...' : 'SEARCH' }
+          {isFetching && showResults ? 'SEARCHING...' : 'SEARCH' }
         </button>
       </div>
     </div>

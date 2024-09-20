@@ -11,13 +11,19 @@ export default function Index() {
   const {
     setSearchType,
     setSearchTerm,
+    setPrevSearchTerm,
+    setSearchTermPicked,
     setShowResults,
+    setShowAutocomplete,
   } = useSearchContext();
 
   useEffect(() => {
     setSearchType('people');
     setSearchTerm('');
+    setPrevSearchTerm('');
+    setSearchTermPicked(false);
     setShowResults(false);
+    setShowAutocomplete(false);
   }, [])
   
   return (

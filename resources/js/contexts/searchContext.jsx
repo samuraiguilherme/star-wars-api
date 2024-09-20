@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useDebounce } from 'use-debounce';
 
@@ -7,8 +7,11 @@ const SearchContext = createContext();
 export const SearchContextProvider = ({ children }) => {
   const [searchType, setSearchType] = useState('people');
   const [searchTerm, setSearchTerm] = useState('');
+  const [prevSearchTerm, setPrevSearchTerm] = useState('');
   const [showResults, setShowResults] = useState(false);
   const [showAutocomplete, setShowAutocomplete] = useState(false);
+  const [searchTermPicked, setSearchTermPicked] = useState(false);
+  
   const [debouncedSearchTerm] = useDebounce(searchTerm, 500);
 
   const {
@@ -18,7 +21,6 @@ export const SearchContextProvider = ({ children }) => {
   } = useQuery({
     queryKey: ['autocomplete'],
     queryFn: async () => {
-      setShowAutocomplete(true);
       const resp = await fetch(`/autocomplete/${searchType}?search=${debouncedSearchTerm}`);
       const data = await resp.json();
       return data;
@@ -27,10 +29,22 @@ export const SearchContextProvider = ({ children }) => {
   })
 
   useEffect(() => {
-    if (debouncedSearchTerm?.length > 1 && !showAutocomplete) {
+    if (debouncedSearchTerm?.length > 1) {
       refetch();
     }
-  }, [debouncedSearchTerm, showAutocomplete])
+  }, [debouncedSearchTerm])
+
+  useEffect(() => {
+    if (prevSearchTerm != debouncedSearchTerm) {
+      setPrevSearchTerm(debouncedSearchTerm);
+
+      if (!searchTermPicked) {
+        setShowAutocomplete(true);
+        setShowResults(false);
+      }
+      setSearchTermPicked(false);
+    }
+  }, [searchType, debouncedSearchTerm, prevSearchTerm, searchTermPicked])
 
   return (
     <SearchContext.Provider
@@ -38,7 +52,9 @@ export const SearchContextProvider = ({ children }) => {
         searchType, setSearchType,
         searchTerm, setSearchTerm,
         showResults, setShowResults,
+        searchTermPicked, setSearchTermPicked,
         showAutocomplete, setShowAutocomplete,
+        setPrevSearchTerm,
         isFetching,
         result,
         refetch,

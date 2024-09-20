@@ -12,14 +12,14 @@ export const ResultsTable = () => {
   return (
     <div className='results-table'>
       {result?.results.map((res, index) => {
-
         const split = res.url.split('/');
         const id = split[split.length - 2];
 
         return (
-          <>
+          <div
+            key={index}
+          >
             <div
-              key={index}
               className='result-item'
             >
               <span className='result-title'>{res.name || res.title}</span>
@@ -34,7 +34,7 @@ export const ResultsTable = () => {
               </div>
             </div>
             <hr />
-          </>
+          </div>
         )
       })}
     </div>
