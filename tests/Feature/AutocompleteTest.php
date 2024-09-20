@@ -5,6 +5,9 @@ namespace Tests\Feature;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
+// Disclaimer: in a real world scenario the dependencies should be mocked,
+// in this case, the Http::get call 
+
 class AutocompleteTest extends TestCase
 {
     public function test_making_an_api_request(): void

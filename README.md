@@ -7,6 +7,8 @@ This is an exercise for testing purposes only. The intention is to showcase prog
 - React
 - Docker
 
+That's why the .env and database.sqlite files were commited since they contain no sensitive information.
+
 ## Features
 
 - Search People and Films by term
@@ -16,17 +18,15 @@ This is an exercise for testing purposes only. The intention is to showcase prog
 
 ## Tech
 
-Dillinger uses a number of open source projects to work properly:
-
 - [React] - The library for web and native user interfaces
 - [Laravel] - The PHP Framework for Web Artisans
 - [Docker] - Accelerated Container Application Development
 
 ## Installation
 
-Star Wars App requires [Docker Desktop](https://www.docker.com/products/docker-desktop/) to run.
+Star Wars App requires [Docker Desktop](https://www.docker.com/products/docker-desktop/) to run. Make sure it is up and running before running the commands.
 
-Install the dependencies and devDependencies and start the server.
+Install the dependencies and start the server:
 
 ```sh
 cd star-wars-api
